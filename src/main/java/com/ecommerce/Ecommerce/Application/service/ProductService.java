@@ -27,9 +27,22 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public Optional<Product> getProductById(int id)
+//    public Optional<Product> getProductById(int id)
+//    {
+//        return productRepository.findById(id);
+//    }
+
+    public Product getProductById(int id)
     {
-        return productRepository.findById(id);
+        Optional<Product> res = productRepository.findById(id);
+        Product product = null;
+        if(res.isPresent())
+        {
+            product = res.get();
+        }
+
+        return product;
+
     }
 
     public List<Product> getAllProductsByCategoryId(int id)

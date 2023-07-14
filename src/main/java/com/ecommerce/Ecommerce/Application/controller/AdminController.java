@@ -120,4 +120,20 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
+    @GetMapping("/admin/product/delete/{id}")
+    public String productDelete(@PathVariable int id)
+    {
+        productService.removeProductById(id);
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/admin/product/update/{id}")
+    public String updateProducts(@PathVariable Integer id,Model model)
+    {
+        Product product = productService.getProductById(id);
+        model.addAttribute("product", product);
+        model.addAttribute("categories",categoryService.getAllCategory());
+        return "productsAdd";
+    }
+
 }
