@@ -3,6 +3,10 @@ package com.ecommerce.Ecommerce.Application.repository;
 import com.ecommerce.Ecommerce.Application.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductRepository extends JpaRepository<Product,Long> {
+import java.util.List;
+
+public interface ProductRepository extends JpaRepository<Product,Integer> {
+
+    List<Product> findAllByCategory_Id(int id);
 
 }

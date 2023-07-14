@@ -1,6 +1,6 @@
 package com.ecommerce.Ecommerce.Application.controller;
 
-import com.ecommerce.Ecommerce.Application.dto.ProductDTO;
+//import com.ecommerce.Ecommerce.Application.dto.ProductDTO;
 import com.ecommerce.Ecommerce.Application.model.Category;
 import com.ecommerce.Ecommerce.Application.model.Product;
 import com.ecommerce.Ecommerce.Application.service.CategoryService;
@@ -9,7 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 
@@ -21,6 +26,8 @@ public class AdminController {
 
     @Autowired
     ProductService productService;
+
+    public static String uploadDir = System.getProperty("user.dir")+"/src/main/resources/static/ProductImages";
 
     @GetMapping("/admin")
     public String adminHome()
@@ -83,16 +90,34 @@ public class AdminController {
     @GetMapping("/admin/products/add")
     public String getProductAdd(Model model)
     {
-        model.addAttribute("ProductDTO", new ProductDTO());
-        model.addAttribute("category",categoryService.getAllCategory());
+        Product product = new Product();
+        model.addAttribute("product", product);
+        model.addAttribute("categories",categoryService.getAllCategory());
         return "productsAdd";
     }
 
-//    @PostMapping("/admin/products/add")
-//    public String postProductAdd(@ModelAttribute("product") Product product)
-//    {
-//        productService.addProduct(product);
-//        return "productsAdd";
-//    }
+    @PostMapping("/admin/products/add")
+    public String postProductAdd(@ModelAttribute("product") Product product,
+                                 @RequestParam("productImage") MultipartFile file,
+                                 @RequestParam("imgName") String imgName) throws IOException {
+        String imageUid;
+
+        if(!file.isEmpty())
+        {
+            imageUid = file.getOriginalFilename();
+            Path fileNamePath = Paths.get(uploadDir,imageUid);
+            Files.write(fileNamePath,file.getBytes());
+        }
+        else
+        {
+            imageUid = imgName;
+        }
+
+        product.setImageName(imageUid);
+
+        productService.addProduct(product);
+
+        return "redirect:/admin/products";
+    }
 
 }
