@@ -9,7 +9,6 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Data
 @Table(name = "users")
 public class User {
 
@@ -18,8 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public Integer id;
 
-    @NotEmpty
-    @Column(nullable = false)
+    @Column(name="firstname",nullable = false)
     public String firstname;
 
     public String lastname;
@@ -29,7 +27,6 @@ public class User {
     @Email(message = "{errors.invalid_email}")
     public String email;
 
-    @NotEmpty
     public String password;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

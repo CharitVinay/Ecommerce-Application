@@ -1,0 +1,7 @@
+client id:
+38972097858-nnmj75clg6jqhn1utmtbetko7lsl3p5p.apps.googleusercontent.com
+
+
+client secret:
+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
+

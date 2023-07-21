@@ -1,6 +1,7 @@
 package com.ecommerce.Ecommerce.Application.configuration;
 
 import com.ecommerce.Ecommerce.Application.model.CustomUserDetails;
+import com.ecommerce.Ecommerce.Application.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -21,14 +23,15 @@ public class SecurityConfig {
     @Autowired
     GoogleOAuth2SuccessHandler googleOAuth2SuccessHandler;
 
-    @Autowired
-    CustomUserDetails customUserDetails;
+//    @Autowired
+//    UserDetails userDetails;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.   csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/","/shop/**","/register").permitAll()
+                .requestMatchers("/","/shop/**","/register","/login").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 )
